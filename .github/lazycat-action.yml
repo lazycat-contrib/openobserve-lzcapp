@@ -38,6 +38,6 @@ stores:
       enabled: false
   private:
     enabled: true
-    skip_if_version_exists: true
+    skip_if_version_exists: false
     name: OpenObserve
     summary: "OpenObserve for LazyCat, published from GitHub Actions"
