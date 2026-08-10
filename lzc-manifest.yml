@@ -1,0 +1,43 @@
+application:
+  subdomain: openobserve
+  upstreams:
+    - location: /
+      backend: http://openobserve:5080/
+  public_path:
+    - /
+  injects:
+    - id: login-autofill
+      on: browser
+      when:
+        - /
+        - /web/login
+        - /web/login*
+      do:
+        - src: builtin://simple-inject-password
+          params:
+            user: "{{ .U.login_user }}"
+            password: "{{ .U.login_password }}"
+            userSelector: '[data-test="login-user-id-field"]'
+            passwordSelector: '[data-test="login-password-field"]'
+            submitSelector: '[data-test="login-sign-in"]'
+            autoSubmit: true
+            retryCount: 20
+            retryIntervalMs: 300
+    - id: open-save-chooser
+      on: browser
+      when:
+        - /*
+      do:
+        - src: file:///lzcapp/pkg/content/lazycat-injects/lzc-file-chooser-inject.js
+
+services:
+  openobserve:
+    # Upstream: ghcr.io/openobserve/openobserve-dev:v0.92.0-rc1-b31ff6c
+    image: ghcr.1ms.run/openobserve/openobserve-dev:v0.92.0-rc1-b31ff6c
+    environment:
+      - ZO_ROOT_USER_EMAIL={{ .U.login_user }}
+      - ZO_ROOT_USER_PASSWORD={{ .U.login_password }}
+    binds:
+      - /lzcapp/var/data:/data
+
+usage: "安装时设置管理员邮箱和密码；打开应用后将自动填写并登录。应用数据保存在 /lzcapp/var/data。"

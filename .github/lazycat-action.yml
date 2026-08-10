@@ -1,0 +1,43 @@
+version: 1
+
+project:
+  root: .
+  build_config: lzc-build.yml
+  package_file: package.yml
+  output: dist/application.lpk
+  target_arch: amd64
+
+update:
+  strategy: publish
+  allow_downgrade: false
+  version_source:
+    type: git
+
+build:
+  toolchains: []
+  run_buildscript: false
+
+images:
+  - id: openobserve
+    target: service
+    service: openobserve
+    source: ghcr.io/openobserve/openobserve-dev
+    channel: custom
+    tag_regex: '^v0\.92\.0-rc1-b31ff6c$'
+    sort: created
+    delivery:
+      mode: mirror
+      image_template: ghcr.1ms.run/openobserve/openobserve-dev:{tag}
+      require_digest_match: true
+
+stores:
+  official:
+    enabled: false
+    skip_if_version_exists: false
+    retry:
+      enabled: false
+  private:
+    enabled: true
+    skip_if_version_exists: true
+    name: OpenObserve
+    summary: "OpenObserve for LazyCat, published from GitHub Actions"

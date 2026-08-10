@@ -1,0 +1,18 @@
+package: community.lazycat.app.openobserve
+version: 0.92.0
+name: OpenObserve
+description: "开源可观测性平台，统一处理日志、指标和链路追踪"
+min_os_version: 1.5.0
+author: openobserve
+license: AGPL-3.0
+homepage: https://github.com/openobserve/openobserve
+permissions:
+  required:
+    - net.internet
+locales:
+  zh:
+    name: "OpenObserve"
+    description: "开源可观测性平台，统一处理日志、指标和链路追踪"
+  en:
+    name: "OpenObserve"
+    description: "Open-source observability platform for logs, metrics, and traces"
