@@ -1,6 +1,9 @@
 name: Build and publish LazyCat LPK
 
 on:
+  # Daily auto-update; GitHub Actions cron is UTC (CST = UTC+8)
+  schedule:
+    - cron: "51 3 * * *"
   push:
     tags:
       - "v*"
